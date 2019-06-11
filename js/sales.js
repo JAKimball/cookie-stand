@@ -1,28 +1,35 @@
 'use strict';
 
-// - An object for each shop
-// - Objects should each follow the same pattern
-// - Properties
-// 	○ minCustPerHour - The minimum number of customers per hour.
-// 	○ maxCustPerHour - The maximum number of customers per hour.
-// 	○ avePerCust - The average number of cookies purchased per customer.
-// - Methods
-// 	○ simulateCustomersPerHour() - Random min thru max based on properties
-// 	○ simulateDay() - Loop thru hours and calculate number of cookies per hour for each hour and store in array property.
-// 		§ hour
-// 		§ numCookies
-// 	○ renderTableAsList
-// 		§ Create header
-// 		§ Create <ul> element
-// 		§ Loop and create and insert <li> elements
-// 		§ Calculate sum
-//     § Create and sum total <li> element
+/*
+
+Code Plan
+
+- An object for each shop
+- Objects should each follow the same pattern
+- Properties
+  - `minCustPerHour` - The minimum number of customers per hour.
+  - `maxCustPerHour` - The maximum number of customers per hour.
+  - `avePerCust` - The average number of cookies purchased per customer.
+- Methods
+  - simulateCustomersPerHour() - Random min thru max based on properties
+    - simulateDay() - Loop thru hours and calculate number of cookies per hour for each hour and store in array property.
+      - `hours: []`
+      - `cookieCountsForHours: []`
+  - calculateTotal - Iterate through cookieCountsForHours array and return the total for the location
+  - renderTableAsList
+    - Create header
+    - Create `<ul>` element
+    - Loop and create and insert `<li>` elements
+    - Call calculateTotal
+    - Create and sum total `<li>` element
+
+*/
 
 function formatHour(hour) {
-  if (hour <= 12) {
+  if (hour < 12) {
     return `${hour}am`;
   } else {
-    return `${hour - 12}pm`;
+    return `${((hour - 1) % 12) + 1}pm`;
   }
 }
 
@@ -47,7 +54,7 @@ var location1 = {
     }
   },
 
-  calculateTotal: function() {
+  calculateTotal: function () {
     var totalProduct = 0;
     for (var i = 0; i < this.cookieCountsForHours.length; i++) {
       totalProduct = totalProduct + this.cookieCountsForHours[i];
@@ -56,8 +63,8 @@ var location1 = {
   },
 
   renderTableAsList: function () { //
-  // Find the element we wish to append the list to
-    var main = document.getElementsByTagName('main')[0];
+    // Find the element we wish to append the list to
+    var main = document.getElementById('ListContainer');
 
     // Create and append the list header
     var newHeader = document.createElement('h2');
@@ -82,7 +89,7 @@ var location1 = {
   },
 
   createListItem: function (index) {
-  // Create a new element
+    // Create a new element
     var newItem = document.createElement('li');
 
     // Add text
@@ -123,7 +130,7 @@ var location2 = {
 
   renderTableAsList: function () { //
     // Find the element we wish to append the list to
-    var main = document.getElementsByTagName('main')[0];
+    var main = document.getElementById('ListContainer');
 
     // Create and append the list header
     var newHeader = document.createElement('h2');
@@ -189,7 +196,7 @@ var location3 = {
 
   renderTableAsList: function () { //
     // Find the element we wish to append the list to
-    var main = document.getElementsByTagName('main')[0];
+    var main = document.getElementById('ListContainer');
 
     // Create and append the list header
     var newHeader = document.createElement('h2');
@@ -255,7 +262,7 @@ var location4 = {
 
   renderTableAsList: function () { //
     // Find the element we wish to append the list to
-    var main = document.getElementsByTagName('main')[0];
+    var main = document.getElementById('ListContainer');
 
     // Create and append the list header
     var newHeader = document.createElement('h2');
@@ -321,7 +328,7 @@ var location5 = {
 
   renderTableAsList: function () { //
     // Find the element we wish to append the list to
-    var main = document.getElementsByTagName('main')[0];
+    var main = document.getElementById('ListContainer');
 
     // Create and append the list header
     var newHeader = document.createElement('h2');

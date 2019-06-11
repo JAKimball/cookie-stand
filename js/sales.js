@@ -47,8 +47,16 @@ var location1 = {
     }
   },
 
+  calculateTotal: function() {
+    var totalProduct = 0;
+    for (var i = 0; i < this.cookieCountsForHours.length; i++) {
+      totalProduct = totalProduct + this.cookieCountsForHours[i];
+    }
+    return totalProduct;
+  },
+
   renderTableAsList: function () { //
-    // Find the element we wish to append the list to
+  // Find the element we wish to append the list to
     var main = document.getElementsByTagName('main')[0];
 
     // Create and append the list header
@@ -63,21 +71,18 @@ var location1 = {
     main.appendChild(newList);
 
     // Iterate through the list appending each to the ul
-    //   Also sum up the total cookie counts
-    var totalProduct = 0;
     for (var i = 0; i < this.hours.length; i++) {
       newList.appendChild(this.createListItem(i));
-      totalProduct = totalProduct + this.cookieCountsForHours[i];
     }
 
     // Append the total to the end of the list
     var newItem = document.createElement('li');
-    newItem.textContent = `Total: ${totalProduct} cookies`;
+    newItem.textContent = `Total: ${this.calculateTotal()} cookies`;
     newList.appendChild(newItem);
   },
 
   createListItem: function (index) {
-    // Create a new element
+  // Create a new element
     var newItem = document.createElement('li');
 
     // Add text
@@ -108,6 +113,14 @@ var location2 = {
     }
   },
 
+  calculateTotal: function () {
+    var totalProduct = 0;
+    for (var i = 0; i < this.cookieCountsForHours.length; i++) {
+      totalProduct = totalProduct + this.cookieCountsForHours[i];
+    }
+    return totalProduct;
+  },
+
   renderTableAsList: function () { //
     // Find the element we wish to append the list to
     var main = document.getElementsByTagName('main')[0];
@@ -124,16 +137,13 @@ var location2 = {
     main.appendChild(newList);
 
     // Iterate through the list appending each to the ul
-    //   Also sum up the total cookie counts
-    var totalProduct = 0;
     for (var i = 0; i < this.hours.length; i++) {
       newList.appendChild(this.createListItem(i));
-      totalProduct = totalProduct + this.cookieCountsForHours[i];
     }
 
     // Append the total to the end of the list
     var newItem = document.createElement('li');
-    newItem.textContent = `Total: ${totalProduct} cookies`;
+    newItem.textContent = `Total: ${this.calculateTotal()} cookies`;
     newList.appendChild(newItem);
   },
 
@@ -169,6 +179,14 @@ var location3 = {
     }
   },
 
+  calculateTotal: function () {
+    var totalProduct = 0;
+    for (var i = 0; i < this.cookieCountsForHours.length; i++) {
+      totalProduct = totalProduct + this.cookieCountsForHours[i];
+    }
+    return totalProduct;
+  },
+
   renderTableAsList: function () { //
     // Find the element we wish to append the list to
     var main = document.getElementsByTagName('main')[0];
@@ -185,16 +203,13 @@ var location3 = {
     main.appendChild(newList);
 
     // Iterate through the list appending each to the ul
-    //   Also sum up the total cookie counts
-    var totalProduct = 0;
     for (var i = 0; i < this.hours.length; i++) {
       newList.appendChild(this.createListItem(i));
-      totalProduct = totalProduct + this.cookieCountsForHours[i];
     }
 
     // Append the total to the end of the list
     var newItem = document.createElement('li');
-    newItem.textContent = `Total: ${totalProduct} cookies`;
+    newItem.textContent = `Total: ${this.calculateTotal()} cookies`;
     newList.appendChild(newItem);
   },
 
@@ -230,6 +245,14 @@ var location4 = {
     }
   },
 
+  calculateTotal: function () {
+    var totalProduct = 0;
+    for (var i = 0; i < this.cookieCountsForHours.length; i++) {
+      totalProduct = totalProduct + this.cookieCountsForHours[i];
+    }
+    return totalProduct;
+  },
+
   renderTableAsList: function () { //
     // Find the element we wish to append the list to
     var main = document.getElementsByTagName('main')[0];
@@ -246,16 +269,13 @@ var location4 = {
     main.appendChild(newList);
 
     // Iterate through the list appending each to the ul
-    //   Also sum up the total cookie counts
-    var totalProduct = 0;
     for (var i = 0; i < this.hours.length; i++) {
       newList.appendChild(this.createListItem(i));
-      totalProduct = totalProduct + this.cookieCountsForHours[i];
     }
 
     // Append the total to the end of the list
     var newItem = document.createElement('li');
-    newItem.textContent = `Total: ${totalProduct} cookies`;
+    newItem.textContent = `Total: ${this.calculateTotal()} cookies`;
     newList.appendChild(newItem);
   },
 
@@ -291,6 +311,14 @@ var location5 = {
     }
   },
 
+  calculateTotal: function () {
+    var totalProduct = 0;
+    for (var i = 0; i < this.cookieCountsForHours.length; i++) {
+      totalProduct = totalProduct + this.cookieCountsForHours[i];
+    }
+    return totalProduct;
+  },
+
   renderTableAsList: function () { //
     // Find the element we wish to append the list to
     var main = document.getElementsByTagName('main')[0];
@@ -307,16 +335,13 @@ var location5 = {
     main.appendChild(newList);
 
     // Iterate through the list appending each to the ul
-    //   Also sum up the total cookie counts
-    var totalProduct = 0;
     for (var i = 0; i < this.hours.length; i++) {
       newList.appendChild(this.createListItem(i));
-      totalProduct = totalProduct + this.cookieCountsForHours[i];
     }
 
     // Append the total to the end of the list
     var newItem = document.createElement('li');
-    newItem.textContent = `Total: ${totalProduct} cookies`;
+    newItem.textContent = `Total: ${this.calculateTotal()} cookies`;
     newList.appendChild(newItem);
   },
 

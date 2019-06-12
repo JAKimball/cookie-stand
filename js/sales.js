@@ -136,25 +136,19 @@ CookieShop.prototype.calculateTotal = function () {
 };
 
 CookieShop.prototype.renderReportRow = function () {
-  var newRow = document.createElement('tr');
+  var eBRow = new ElementBuilder( document.createElement('tr'));
 
   // Location Name
-  var newCell = document.createElement('td');
-  newCell.textContent = this.locationName;
-  newRow.appendChild(newCell);
+  eBRow.appendNewWithText('td', this.locationName);
 
   // List the hours
   for (var i = 0; i < this.cookieCountsForHours.length; i++) {
-    newCell = document.createElement('td');
-    newCell.textContent = this.cookieCountsForHours[i];
-    newRow.appendChild(newCell);
+    eBRow.appendNewWithText('td', this.cookieCountsForHours[i]);
   }
 
   // Daily Location Total
-  newCell = document.createElement('td');
-  newCell.textContent = this.calculateTotal();
-  newRow.appendChild(newCell);
-  return newRow;
+  eBRow.appendNewWithText('td', this.calculateTotal());
+  return eBRow.element;
 };
 
 // -- Our Initialization Data for Each Shop --
@@ -230,25 +224,38 @@ function calculateGrandTotal() {
 
 // --- Global Report Rendering Functions ---
 
+function ElementBuilder(parent) {
+  this.element = parent;
+}
+
+ElementBuilder.prototype.appendNewWithText = function (tagName, Text, className) {
+  var newElement = document.createElement(tagName);
+  if (typeof Text !== 'undefined') {
+    newElement.textContent = Text;
+  }
+  if (typeof className !== 'undefined') {
+    newElement.className = className;
+  }
+  this.element.appendChild(newElement);
+  return newElement;
+};
+
 function renderReportHeader() {
-  var newHeader = document.createElement('thead');
-  var newRow = document.createElement('tr');
 
   // Upper left is blank
-  newRow.appendChild(document.createElement('th'));
+  var eBRow = new ElementBuilder(document.createElement('tr'));
+  eBRow.appendNewWithText('th');
 
   // List the hours
   for (var i = 0; i < hours.length; i++) {
-    var newCell = document.createElement('th');
-    newCell.textContent = hours[i];
-    newRow.appendChild(newCell);
+    eBRow.appendNewWithText('th', hours[i]);
   }
 
   // Daily Location Total
-  newCell = document.createElement('th');
-  newCell.textContent = 'Daily Location Total';
-  newRow.appendChild(newCell);
-  newHeader.appendChild(newRow);
+  eBRow.appendNewWithText('th', 'Daily Location Total');
+
+  var newHeader = document.createElement('thead');
+  newHeader.appendChild(eBRow.element);
   return newHeader;
 }
 
@@ -262,26 +269,21 @@ function renderReportBody() {
 }
 
 function renderReportFooter() {
-  var newFooter = document.createElement('tfoot');
-  var newRow = document.createElement('tr');
+  var eBRow = new ElementBuilder(document.createElement('tr'));
 
   // Totals
-  var newCell = document.createElement('td');
-  newCell.textContent = 'Total';
-  newRow.appendChild(newCell);
+  eBRow.appendNewWithText('td', 'Total');
 
   // List the hours
   for (var i = 0; i < hours.length; i++) {
-    newCell = document.createElement('td');
-    newCell.textContent = totalByHour[i];
-    newRow.appendChild(newCell);
+    eBRow.appendNewWithText('td', totalByHour[i]);
   }
 
   // Grand Total
-  newCell = document.createElement('td');
-  newCell.textContent = calculateGrandTotal();
-  newRow.appendChild(newCell);
-  newFooter.appendChild(newRow);
+  eBRow.appendNewWithText('td', calculateGrandTotal());
+
+  var newFooter = document.createElement('tfoot');
+  newFooter.appendChild(eBRow.element);
   return newFooter;
 }
 

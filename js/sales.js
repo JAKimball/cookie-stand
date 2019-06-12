@@ -5,6 +5,7 @@
 Code Plan
 
 - Implement a `totalByHour` object with *static* methods for adding and reporting by hour.
+- By function create a global array for hours and populate it with strings to label each hour.
 - Constructor function for a generic cookieShop
   - Function arguments
     - `locationName` - The name of the location.  Used in the report row headers.
@@ -17,30 +18,30 @@ Code Plan
     - `maxCustPerHour` - The maximum number of customers per hour.
     - `avePerCust` - The average number of cookies purchased per customer.
 - Refactor the following as prototype methods of the cookieShop object
-  - simulateCustomersPerHour() - Random min thru max based on properties
-  - simulateDay() - Loop thru hours and calculate number of cookies per hour for each hour and store in array property.
-    - `hours: []`
+  - `simulateCustomersPerHour()` - Random min thru max based on properties
+  - `simulateDay()` - Loop thru hours and calculate number of cookies per hour for each hour and store in array property.
     - `cookieCountsForHours: []`
   - `calculateTotal()` - Iterate through cookieCountsForHours array and return the total for the location
 - Implement a global `renderReportTable()` function which does the following
   - Find the HTML element to accept the table
   - Create the `<table>` element
-  - Call a prototype method (`createReportHeader`) with the following steps to create the table header
+  - Call a global `renderReportHeader()` function with the following steps to create the table header
     - Create the `<thead>` element
     - Create the `<tr>` element
     - Create the `<th>` header cell elements and insert them into the header `<tr>`
     - Insert (appendChild) the header `<tr>` into the `<thead>`
   - Insert the `<thead>` element into the previously created `<table>` element
-  - Call a prototype method (`createReportBody`) with the following steps to create the table body
+  - Call a global `renderReportBody()` function with the following steps to create the table body
     - Create the `<tbody>` element
     - For each location do the following
-      - Create the `<tr>` element to accept the row of results for the location
-      - Create and insert into the `<tr>` a `<td>` for the location name
-      - Loop thru hours and Create the `<td>` elements for each for the location of the row and append them to the `<tr>`
-      - Create the `<td>` with the location total (from calculateTotal) and append to the `<tr>`
+      - Call a prototype method (`renderReportRow()`) of the cookieShop object which does the following
+        - Create the `<tr>` element to accept the row of results for the location
+        - Create and insert into the `<tr>` a `<td>` for the location name
+        - Loop thru hours and Create the `<td>` elements for each for the location of the row and append them to the `<tr>`
+        - Create the `<td>` with the location total (from calculateTotal) and append to the `<tr>`
       - Insert the completed `<tr>` for the location into the `<tbody>` element
   - Insert the `<tbody>` element into the previously created `<table>` element
-  - Call a prototype method (`createReportFooter`) with the following steps to create the table footer
+  - Call a global `renderReportFooter()` function with the following steps to create the table footer
     - With a nested loop, iterate thru all locations and hours to add data to the `totalByHour` object
     - Create the `<tfoot>` element
     - Create the `<tr>` element
@@ -60,20 +61,43 @@ function formatHour(hour) {
   }
 }
 
-// -- totalByHour --
+// -- The array of hours --
 
-var totalByHour = {};
+var hours = [];
 
-totalByHour.addToHour = function (hourNum, amount) {
-  if (typeof this[hourNum] === 'undefined') {
-    this[hourNum] = amount;
-  } else {
-    this[hourNum] = this[hourNum] + amount;
+hours.initialize = function (minHour, maxHour) {
+  // Clear first in case we call again
+  while (hours.length > 0) {
+    hours.pop();
+  }
+
+  for (var hour = minHour; hour <= maxHour; hour++) {
+    this.push(formatHour(hour));
   }
 };
 
-totalByHour.hourTotal = function (hourNum) {
-  return this[hourNum];
+// -- totalByHour --
+// Object with static methods to track total by hour
+//   by creating properties to store the hour totals.
+
+var totalByHour = {};
+
+totalByHour.addToHour = function (hourIndex, amount) {
+  this[hourIndex] = this.hourTotal(hourIndex) + amount;
+};
+
+totalByHour.hourTotal = function (hourIndex) {
+  if (typeof this[hourIndex] === 'undefined') {
+    return 0;
+  } else {
+    return this[hourIndex];
+  }
+};
+
+totalByHour.reset = function () {
+  for (var i = 0; i < 24; i++) {
+    this[i] = 0;
+  }
 };
 
 // -- CookieShop --
@@ -84,7 +108,6 @@ function CookieShop(locationName, minCustPerHour, maxCustPerHour, avePerCust) {
   this.minCustPerHour = minCustPerHour;
   this.maxCustPerHour = maxCustPerHour;
   this.avePerCust = avePerCust;
-  this.hours = [];
   this.cookieCountsForHours = [];
   CookieShop.list.push(this);
 }
@@ -99,8 +122,7 @@ CookieShop.prototype.simulateCustomersPerHour = function () {
 
 // Loop thru hours and calculate number of cookies per hour for each hour and store in array property
 CookieShop.prototype.simulateDay = function () {
-  for (var hour = 6; hour <= 20; hour++) {
-    this.hours.push(hour);
+  for (var i = 0; i < hours.length; i++) {
     this.cookieCountsForHours.push(Math.round(this.simulateCustomersPerHour() * this.avePerCust));
   }
 };
@@ -113,43 +135,29 @@ CookieShop.prototype.calculateTotal = function () {
   return totalProduct;
 };
 
-CookieShop.prototype.renderTableAsList = function () {
-  // Find the element we wish to append the list to
-  var main = document.getElementById('ReportContainer');
+CookieShop.prototype.renderReportRow = function () {
+  var newRow = document.createElement('tr');
 
-  // Create and append the list header
-  var newHeader = document.createElement('h2');
-  newHeader.textContent = this.locationName;
-  newHeader.className = 'cookie-list-header';
-  main.appendChild(newHeader);
+  // Location Name
+  var newCell = document.createElement('td');
+  newCell.textContent = this.locationName;
+  newRow.appendChild(newCell);
 
-  // Create and append the list element
-  var newList = document.createElement('ul');
-  newList.className = 'cookie-list';
-  main.appendChild(newList);
-
-  // Iterate through the list appending each to the ul
-  for (var i = 0; i < this.hours.length; i++) {
-    newList.appendChild(this.createListItem(i));
+  // List the hours
+  for (var i = 0; i < this.cookieCountsForHours.length; i++) {
+    newCell = document.createElement('td');
+    newCell.textContent = this.cookieCountsForHours[i];
+    newRow.appendChild(newCell);
   }
 
-  // Append the total to the end of the list
-  var newItem = document.createElement('li');
-  newItem.textContent = `Total: ${this.calculateTotal()} cookies`;
-  newList.appendChild(newItem);
+  // Daily Location Total
+  newCell = document.createElement('td');
+  newCell.textContent = this.calculateTotal();
+  newRow.appendChild(newCell);
+  return newRow;
 };
 
-CookieShop.prototype.createListItem = function (index) {
-  // Create a new element
-  var newItem = document.createElement('li');
-
-  // Add text
-  newItem.textContent = `${formatHour(this.hours[index])}: ${this.cookieCountsForHours[index]} cookies`;
-
-  return newItem;
-};
-
-// -- Our Data --
+// -- Our Initialization Data for Each Shop --
 
 var location1 = {
   locationName: '1st and Pike',
@@ -198,17 +206,100 @@ function createShops() {
   createShop(location5);
 }
 
-function processAll() {
+function simulateDayForAll() {
   for (var i = 0; i < CookieShop.list.length; i++) {
     CookieShop.list[i].simulateDay();
   }
+}
 
-  for (i = 0; i < CookieShop.list.length; i++) {
-    CookieShop.list[i].renderTableAsList();
+function generateTotalsByHour() {
+  totalByHour.reset();
+  for (var i = 0; i < CookieShop.list.length; i++) {
+    for (var j = 0; j < CookieShop.list[i].cookieCountsForHours.length; j++) { totalByHour.addToHour(j, CookieShop.list[i].cookieCountsForHours[j]);
+    }
   }
 }
 
+function calculateGrandTotal() {
+  var grandTotal = 0;
+  for (var i = 0; i < CookieShop.list.length; i++) {
+    grandTotal += CookieShop.list[i].calculateTotal();
+  }
+  return grandTotal;
+}
+
+// --- Global Report Rendering Functions ---
+
+function renderReportHeader() {
+  var newHeader = document.createElement('thead');
+  var newRow = document.createElement('tr');
+
+  // Upper left is blank
+  newRow.appendChild(document.createElement('th'));
+
+  // List the hours
+  for (var i = 0; i < hours.length; i++) {
+    var newCell = document.createElement('th');
+    newCell.textContent = hours[i];
+    newRow.appendChild(newCell);
+  }
+
+  // Daily Location Total
+  newCell = document.createElement('th');
+  newCell.textContent = 'Daily Location Total';
+  newRow.appendChild(newCell);
+  newHeader.appendChild(newRow);
+  return newHeader;
+}
+
+function renderReportBody() {
+  var newBody = document.createElement('tbody');
+  for (var i = 0; i < CookieShop.list.length; i++){
+    var newRow = CookieShop.list[i].renderReportRow();
+    newBody.appendChild(newRow);
+  }
+  return newBody;
+}
+
+function renderReportFooter() {
+  var newFooter = document.createElement('tfoot');
+  var newRow = document.createElement('tr');
+
+  // Totals
+  var newCell = document.createElement('td');
+  newCell.textContent = 'Total';
+  newRow.appendChild(newCell);
+
+  // List the hours
+  for (var i = 0; i < hours.length; i++) {
+    newCell = document.createElement('td');
+    newCell.textContent = totalByHour[i];
+    newRow.appendChild(newCell);
+  }
+
+  // Grand Total
+  newCell = document.createElement('td');
+  newCell.textContent = calculateGrandTotal();
+  newRow.appendChild(newCell);
+  newFooter.appendChild(newRow);
+  return newFooter;
+}
+
+function renderReportTable() {
+  var newTable = document.createElement('table');
+  newTable.appendChild(renderReportHeader());
+  newTable.appendChild(renderReportBody());
+  newTable.appendChild(renderReportFooter());
+  return newTable;
+}
+
+// ------ Main code -------
+
+hours.initialize(6, 20);
 createShops();
-processAll();
+simulateDayForAll();
+generateTotalsByHour();
 
-
+// Find the element we wish to append the table to
+var main = document.getElementById('ReportContainer');
+main.appendChild(renderReportTable());

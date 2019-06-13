@@ -1,5 +1,15 @@
 @import url("https://fonts.googleapis.com/css?family=Permanent+Marker&display=swap");
 
+.hidden {
+    display: none;
+}
+
+* {
+    border: 5px;
+    border-style: solid;
+
+}
+
 h1,
 h2,
 h3,
@@ -70,14 +80,48 @@ h6 {
 
 td {
     text-align: right;
+    /* border: 1px; */
+    border-color: blue;
+    padding: .5em;
+
+}
+
+tfoot td {
+    font-weight: bold;
+}
+
+table tr td:last-child {
+    font-weight: bold;
+}
+
+table tr td:first-child {
+    font-weight: bold;
 }
 
 thead th:last-child {
     text-align: center;
+    font-family: "Permanent Marker";
 }
 
 .headShot {
     box-shadow: 1em 2em 6em 0em rgba(0, 0, 0, 0.35),
         1em 2em 2em 0em rgba(0, 0, 0, 0.1);
     border-radius: 1em;
+}
+
+form fieldset {
+    position: absolute;
+}
+
+form fieldset label {
+    display: inline-block;
+}
+
+form fieldset div {
+    display: inline-block;
+    margin: 0em 1em;
+}
+
+form fieldset input {
+    width: 90%
 }

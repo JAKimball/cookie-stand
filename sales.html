@@ -19,7 +19,44 @@
       </ul>
     </nav>
   </header>
-  <main id="ReportContainer">
+  <main>
+    <section id="ReportContainer">
+      <!-- Table inserted here by sales.js via ReportContainer id -->
+    </section>
+    <form id="QueryForm">
+      <fieldset>
+        <legend>Add another store!</legend>
+
+        <div>
+          <label>Location<br />
+            <input type="text" id="QLocation" name="Location" placeholder="Location" required="true">
+          </label>
+        </div>
+
+        <div>
+          <label>Minimum Customers Per Hour<br />
+            <input type="number" id="QMinCustPerHour" name="MinCustPerHour" required="true">
+          </label>
+        </div>
+
+        <div>
+          <label>Maximum Customers Per Hour<br />
+            <input type="number" id="QMaxCustPerHour" name="MaxCustPerHour" required="true">
+          </label>
+        </div>
+
+        <div>
+          <label>Ave. Per Customer<br />
+            <input id="QAvePerCust" type="text" name="AvePerCust" required="true">
+          </label>
+        </div>
+
+        <div>
+          <button id="AddButton">Add New Location</button>
+        </div>
+
+      </fieldset>
+    </form>
   </main>
   <script src="js/sales.js"></script>
   <script src="js/test-sales.js"></script>

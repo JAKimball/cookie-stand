@@ -19,7 +19,6 @@ function testTotalByHour() {
   hours.initialize(6, 20);
   console.log(hours);
   console.log(hours.length);
-
 }
 
-testTotalByHour();
+// testTotalByHour();

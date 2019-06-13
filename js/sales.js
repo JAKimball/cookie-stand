@@ -295,6 +295,69 @@ function renderReportTable() {
   return newTable;
 }
 
+// ------ Form code ------
+
+// isNumeric() function from https://stackoverflow.com/questions/9716468/pure-javascript-a-function-like-jquerys-isnumeric
+function isNumeric(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+function validateForm(form) {
+  var isValid = true;
+  if (parseInt(form.QMinCustPerHour.value) > parseInt(form.QMaxCustPerHour.value)) {
+    isValid = false;
+    console.log(`${form.QMinCustPerHour.value} > ${form.QMaxCustPerHour.value}`);
+    alert('Minimum Customers Per Hour must not be greater that Maximum Customers Per Hour.  Please correct.');
+  }
+  if (!isNumeric(form.QAvePerCust.value)) {
+    isValid = false;
+    alert('Ave. Per Customer must be a number.  Please correct.');
+  }
+  return isValid;
+}
+
+// event is "submit"
+// event.target is "the form"
+// event.target.monkeys is "the input with an id of monkeys"
+// event.target.monkeys.value is what the person typed into that field
+function formSubmit(event) {
+  event.preventDefault();
+  console.log(this);
+
+  // Validate
+
+  if (validateForm(event.target)) {
+    new CookieShop(
+      this.QLocation.value,
+      parseInt(this.QMinCustPerHour.value),
+      parseInt(this.QMaxCustPerHour.value),
+      this.QAvePerCust.value);
+    this.reset();
+
+    // Clear the table
+    var main = document.getElementById('ReportContainer');
+    // https://stackoverflow.com/questions/3955229/remove-all-child-elements-of-a-dom-node-in-javascript
+    while (main.firstChild) {
+      main.removeChild(main.firstChild);
+    }
+    // main.innerHTML = '';
+    totalByHour.reset();
+
+
+    // Redo for new store collection!
+    simulateDayForAll();
+    generateTotalsByHour();
+
+    // Find the element we wish to append the table to
+    main.appendChild(renderReportTable());
+  }
+}
+
+function addFormButtonListener() {
+  var el = document.getElementById('QueryForm');
+  el.addEventListener('submit', formSubmit);
+}
+
 // ------ Main code -------
 
 hours.initialize(6, 20);
@@ -305,3 +368,5 @@ generateTotalsByHour();
 // Find the element we wish to append the table to
 var main = document.getElementById('ReportContainer');
 main.appendChild(renderReportTable());
+
+addFormButtonListener();

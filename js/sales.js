@@ -122,6 +122,7 @@ CookieShop.prototype.simulateCustomersPerHour = function () {
 
 // Loop thru hours and calculate number of cookies per hour for each hour and store in array property
 CookieShop.prototype.simulateDay = function () {
+  this.cookieCountsForHours = [];
   for (var i = 0; i < hours.length; i++) {
     this.cookieCountsForHours.push(Math.round(this.simulateCustomersPerHour() * this.avePerCust));
   }
@@ -337,10 +338,10 @@ function formSubmit(event) {
     // Clear the table
     var main = document.getElementById('ReportContainer');
     // https://stackoverflow.com/questions/3955229/remove-all-child-elements-of-a-dom-node-in-javascript
+    // below is faster than main.innerHTML = '';
     while (main.firstChild) {
       main.removeChild(main.firstChild);
     }
-    // main.innerHTML = '';
     totalByHour.reset();
 
 

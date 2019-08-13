@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <link rel="stylesheet" href="css/reset.css"> -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <header>
+    <h1>Sales</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section id="ReportContainer">
+      <!-- Table inserted here by sales.js via ReportContainer id -->
+    </section>
+    <form id="QueryForm">
+      <fieldset>
+        <legend>Add another store!</legend>
+
+        <div>
+          <label>Location<br />
+            <input type="text" id="QLocation" name="Location" placeholder="Location" required="true">
+          </label>
+        </div>
+
+        <div>
+          <label>Minimum Customers Per Hour<br />
+            <input type="number" id="QMinCustPerHour" name="MinCustPerHour" required="true">
+          </label>
+        </div>
+
+        <div>
+          <label>Maximum Customers Per Hour<br />
+            <input type="number" id="QMaxCustPerHour" name="MaxCustPerHour" required="true">
+          </label>
+        </div>
+
+        <div>
+          <label>Ave. Per Customer<br />
+            <input id="QAvePerCust" type="text" name="AvePerCust" required="true">
+          </label>
+        </div>
+
+        <div>
+          <button id="AddButton">Add New Location</button>
+        </div>
+
+      </fieldset>
+    </form>
+  </main>
+  <script src="js/sales.js"></script>
+  <script src="js/test-sales.js"></script>
+</body>
+
+</html>
